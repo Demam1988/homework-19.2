@@ -20,8 +20,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to="product_photo", verbose_name="фото", blank=True, null=True)
     category = models.ForeignKey('Category', related_name='products', verbose_name="Категория", on_delete=models.SET_NULL, blank=True, null=True)
     price = models.IntegerField(verbose_name="Цена за покупку")
-    created_at = models.IntegerField(max_length=50, verbose_name="Дата создания (записи в БД)")
-    updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)")
+    created_at = models.IntegerField(max_length=50, verbose_name="Дата создания (записи в БД)", blank=True, null=True)
+    updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)", blank=True, null=True)
     manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", blank=True, null=True)
 
 

@@ -3,13 +3,16 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from catalog.models import Product, Category
-from catalog.views import home, contacts, base_list
+from catalog.views import home, contacts, product_list, product_detail
 
 urlpatterns = [
     path('', home, name='catalog'),
-    path('contacts/', contacts, name='catalog'),
+    path('contacts/', contacts, name='contacts'),
     path('contacts/', Category, name='category'),
-    path('products/', Product, name='products'),
-    path('', base_list, name='base_list')
+    path('contacts/', Product, name='products'),
+    path('', product_list, name='product_list'),
+#    path('catalog/<pk:int>/', product_detail, name='product_detail')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
 

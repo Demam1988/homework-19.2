@@ -1,5 +1,8 @@
 {% extends 'catalog/base.html' %}
+{% load my_tags %}
 {% block content %}
+
+
 <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
@@ -13,17 +16,16 @@
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for product in base_list %}
+        {% for product in objects_list %}
         <div class="col">
           <div class="card shadow-sm">
-            <img src="/media/{{ product.image }}" alt="Product image" class="img-fluid">
+            <img src="{{ object.photo | media_filter }}" alt="Product image" class="img-fluid">
             <div class="card-body">
               <p class="card-text">{{product}}</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
+                <ul class="list_unstyled">
+                   <li><a href="{% url 'catalog:product_detail' product.pk %}" class="text-dark">Посмотреть</a></li>
+                </ul>
                 <small class="text-body-secondary">9 mins</small>
               </div>
             </div>

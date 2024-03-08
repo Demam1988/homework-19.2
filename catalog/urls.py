@@ -12,7 +12,7 @@ app_name = CatalogConfig.name
 urlpatterns = [
                   path('', product_list, name='product_list'),
                   path('products', product_list, name='product_list'),
- #                 path('product/<ink:pk>/', product_detail, name='product_detail')
+                  path('catalog/<int:pk>/', product_detail, name='product_detail')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

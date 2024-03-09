@@ -23,7 +23,7 @@
                     <div class="card-body">
                         <p class="card-text">{{product}}</p>
                         <tr>
-                            <td>{{ product.description }}</td>
+                            <td>{{ product.description | truncatechars:100}}</td>
                         </tr>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-body-secondary">9 mins</small>

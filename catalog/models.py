@@ -18,11 +18,16 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Наименование")
     description = models.TextField(max_length=300, verbose_name="Описание")
     image = models.ImageField(upload_to="product_photo", verbose_name="фото", blank=True, null=True)
-    category = models.ForeignKey('Category', related_name='products', verbose_name="Категория", on_delete=models.SET_NULL, blank=True, null=True)
+    category = models.ForeignKey('Category', related_name='products', verbose_name="Категория",
+                                 on_delete=models.SET_NULL, blank=True, null=True)
     price = models.IntegerField(verbose_name="Цена за покупку")
     created_at = models.IntegerField(max_length=50, verbose_name="Дата создания (записи в БД)", blank=True, null=True)
-    updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)", blank=True, null=True)
-    manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", blank=True, null=True)
+    updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)", blank=True,
+                                     null=True)
+    manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", blank=True,
+                                          null=True)
+    view_counter = models.PositiveIntegerField(verbose_name="Счетчик Провмотров", help_text="Укажите кол-во прсмотров",
+                                               default=0)
 
 
     class Meta:
@@ -32,5 +37,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-

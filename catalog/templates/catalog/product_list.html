@@ -1,14 +1,15 @@
 {% extends 'catalog/base.html' %}
 {% load my_tags %}
+
+
 {% block content %}
-
-
 <section class="py-5 text-center container">
     <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">Продукты</h1>
             <p class="lead text-body-secondary">Только лучшие товары.</p>
-            <a class="btn btn-primary text-center" href="{% url 'catalog:product_create'%}" role="button">Создать продукт</a>
+            <a class="btn btn-primary text-center" href="{% url 'catalog:product_create'%}" role="button">Создать
+                продукт</a>
         </div>
     </div>
 </section>
@@ -16,7 +17,7 @@
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for product in objects_list %}
+            {% for product in object_list %}
             <div class="col">
                 <div class="card shadow-sm">
                     <img src="{{ object.photo | media_filter }}" alt="Product image" class="img-fluid">

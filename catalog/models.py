@@ -33,3 +33,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Version(models.Model):
+    SIGN_CHOICES = (('active', 'Активна'), ('no_active', 'Не активна'))
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="get_ver", verbose_name='продукт')
+    number_ver = models.CharField(max_length=100, verbose_name='номер версии')
+    name_ver = models.CharField(max_length=100, verbose_name='название версии')
+    sign_ver = models.CharField(max_length=50, choices=SIGN_CHOICES, verbose_name='признак версии')
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+
+    def __str__(self):
+        return f'{self.product} - {self.number_ver}/({self.name_ver})'

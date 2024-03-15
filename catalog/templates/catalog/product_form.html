@@ -1,6 +1,4 @@
 {% extends 'catalog/base.html' %}
-
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -12,9 +10,9 @@
                         {{ form.as_p }}
                         <button type="submit" class="btn btn-primary">
                             {% if object %}
-                            Сохранить
+                                Сохранить
                             {% else %}
-                            Создать
+                                Создать
                             {% endif %}
                         </button>
                     </form>

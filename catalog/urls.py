@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.conf.urls.static import static
+from django.db.models import PositiveIntegerField
 from django.urls import path
 from catalog.apps import CatalogConfig
 
@@ -13,7 +14,7 @@ urlpatterns = [
                   path('', ProductListView.as_view(), name='product_list'),
                   path('products', ProductListView.as_view(), name='product_list'),
                   path('catalog/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
-                  path('catalor/create/', ProductCreateView.as_view(), name='product_create'),
+                  path('create/', ProductCreateView.as_view(), name='product_create'),
                   path('catalog/<int:pk>/update/', ProductUpdateView.as_view(), name='product_update'),
                   path('catalog/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
 

@@ -11,6 +11,12 @@ from catalog.views import home, contacts, ProductListView, ProductDetailView, Pr
 app_name = CatalogConfig.name
 
 urlpatterns = [
+                  # path('', BlogListView.as_view(), name='list'),
+                  # path('create/', BlogCreateView.as_view(), name='create'),
+                  # path('view/<slug:slug>/', BlogDetailView.as_view(), name='view'),
+                  # path('edit/<slug:slug>/', BlogUpdateView.as_view(), name='edit'),
+                  # path('delete/<slug:pk>/', BlogDeleteView.as_view(), name='delete'),
+                  # ###################################################################
                   path('', ProductListView.as_view(), name='product_list'),
                   path('products', ProductListView.as_view(), name='product_list'),
                   path('catalog/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),

@@ -21,3 +21,7 @@ class VersionAdmin(admin.ModelAdmin):
     list_filter = ("number_ver",)
     search_fields = ("name", "number_ver",)
 
+
+# @admin.register(Blog)
+# class BlogAdmin(admin.ModelAdmin):
+#     list_display = ('title', 'slug', 'content', 'img_preview', 'sign_publication', 'number_views',)

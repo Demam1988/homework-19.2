@@ -1,5 +1,23 @@
 from django.db import models
 
+NULLABLE = {'blank':True, 'null':True}
+
+
+
+# class Blog(models.Model):
+#     title = models.CharField(max_length=100, verbose_name='заголовок')# заголовок,
+#     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+#     content = models.TextField(**NULLABLE, verbose_name='содержимое') # содержимое, можно не заполнять
+#     img_preview = models.ImageField(upload_to='blog_photo', **NULLABLE, verbose_name='изображение') # изображение (превью)
+#     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='количество просмотров') # дата создания,
+#     sign_publication = models.BooleanField(default=True) #признак публикации
+#     number_views = models.IntegerField(**NULLABLE, default=0, verbose_name='просмотры') # просмотры
+#
+#
+#     def __str__(self):
+#         return f'{self.title}'
+
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Наименование")
@@ -17,13 +35,13 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Наименование")
     description = models.TextField(max_length=300, verbose_name="Описание")
-    image = models.ImageField(upload_to="product_photo", verbose_name="фото", blank=True, null=True)
-    category = models.ForeignKey('Category', related_name='products', verbose_name="Категория", on_delete=models.SET_NULL, blank=True, null=True)
+    image = models.ImageField(upload_to="product_photo", verbose_name="фото", **NULLABLE)
+    category = models.ForeignKey('Category', related_name='products', verbose_name="Категория", on_delete=models.SET_NULL, **NULLABLE)
     price = models.IntegerField(verbose_name="Цена за покупку")
-    created_at = models.IntegerField(max_length=50, verbose_name="Дата создания (записи в БД)", blank=True, null=True)
-    updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)", blank=True, null=True)
-    manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", blank=True, null=True)
-    view_counter = models.PositiveIntegerField(verbose_name="Счетчик Провмотров", help_text="Укажите кол-во прсмотров", default=0)
+    created_at = models.IntegerField(max_length=50, verbose_name="Дата создания (записи в БД)", **NULLABLE)
+    updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)", **NULLABLE)
+    manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", **NULLABLE)
+    view_counter = models.PositiveIntegerField(verbose_name="Счетчик Проcмотров", help_text="Укажите кол-во просмотров", default=0)
 
 
     class Meta:

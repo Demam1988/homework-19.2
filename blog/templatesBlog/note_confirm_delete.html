@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>Хотите удалить материал <b>{{ object.title }}</b> ?</p>
+
+
+    <button type="submit" class="btn btn-danger">Удалить</button>
+
+    <a href="{% url 'blog:list'%}"> <button class="btn btn-warning">Отмена</button></a>
+
+</form>
+
+{% endblock %}

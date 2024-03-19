@@ -1,9 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
-from django.shortcuts import render, get_object_or_404
-from django.template.defaultfilters import slugify
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
@@ -20,53 +18,6 @@ def contacts(request):
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"
-
-
-# class BlogCreateView(CreateView):
-#         model = Blog
-#         fields = (
-#             'title', 'content', 'img_preview',
-#             'sign_publication',)  # здесь устанавливаются поля для автоматической формы
-#         success_url = reverse_lazy('catalog:blog_list')
-#
-#         def form_valid(self, form):
-#             if form.is_valid():
-#                 new_blog = form.save()
-#                 new_blog.slug = slugify(new_blog.title)
-#                 new_blog.save()
-#             return super().form_valid(form)
-#
-#
-# class BlogListView(ListView):
-#         model = Blog
-#
-#         def get_queryset(self, *args, **kwargs):
-#             queryset = super().get_queryset(*args, **kwargs)
-#             queryset = queryset.filter(sign_publication=True)
-#             return queryset
-#
-#
-# class BlogDetailView(DetailView):
-#         model = Blog
-#         success_url = reverse_lazy('catalog:blog_list')
-#
-#         def get_object(self, queryset=None):
-#             """ добавили счетик просмотров """
-#             self.object = super().get_object(queryset)
-#             self.object.number_views += 1
-#             self.object.save()
-#             return self.object
-#
-#
-# class BlogUpdateView(UpdateView):
-#     model = Blog
-#     fields = ('title', 'slug', 'content', 'img_preview', 'sign_publication', 'number_views',)
-#     success_url = reverse_lazy('catalog:blog_list')
-#
-#
-# class BlogDeleteView(DeleteView):
-#     model = Blog
-#     success_url = reverse_lazy('catalog:blog_list')
 
 
 class ProductDetailView(DetailView):
@@ -117,3 +68,13 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
+
+
+class ContactView(View):
+    template_name = "catalog/contacts.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        return render(request, "catalog/not_available.html")

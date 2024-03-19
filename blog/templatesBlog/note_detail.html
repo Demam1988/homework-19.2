@@ -1,0 +1,27 @@
+{% extends 'catalog/base.html' %}
+
+{% load my_tags %}
+
+{% block content %}
+
+
+<h1 align="center">Запись в блоге {{pk}}</h1>
+
+<div class="card mx-auto text-left">
+  <div class="card-body">
+
+
+
+
+    <h5 class="card-title">{{ object.header | upper}}</h5>
+    <p class="card-text">{{ object.content }}</p>
+    <img src="{{object.preview|show_img }}" alt="Фото" style="width:20%;">
+    <p>Просмотры: {{ object.count_view }}</p>
+
+
+  </div>
+</div>
+
+
+
+{% endblock %}

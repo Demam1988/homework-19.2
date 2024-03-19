@@ -1,4 +1,4 @@
-from datetime import timezone
+from django import forms
 
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, BooleanField
@@ -41,9 +41,12 @@ class ProductForm(StyleFormMixin, ModelForm):
         return cleaned_data
 
 
-class VersionForm(StyleFormMixin, ModelForm):
+class VersionForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Version
-        fields = ('name_ver', 'number_ver', 'sign_ver')
+        fields = '__all__'
+
+        name = forms.CharField(widget=forms.TextInput(
+            attrs={"class": "myfield"}))
 
 

@@ -1,0 +1,24 @@
+{% extends 'catalog/base.html' %}
+
+{% block content}
+
+{% block content %}
+
+<!--{% csrf_token %}-->
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if object %}
+    <button type="submit" class="btn btn-success">Сохранить измененмя</button>
+
+    {% else %}
+
+    <button type="submit" class="btn btn-success">Создать</button>
+
+
+    {% endif %}
+</form>
+
+{% endblock %}

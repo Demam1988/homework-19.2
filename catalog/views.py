@@ -67,11 +67,6 @@ class ProductListView(ListView):
 # class BlogDeleteView(DeleteView):
 #     model = Blog
 #     success_url = reverse_lazy('catalog:blog_list')
-#
-
-###################################################################
-# crud для продуктов
-###################################################################
 
 
 class ProductDetailView(DetailView):

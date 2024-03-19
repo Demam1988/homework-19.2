@@ -4,8 +4,7 @@ from django.db.models import PositiveIntegerField
 from django.urls import path
 from catalog.apps import CatalogConfig
 
-from catalog.models import Product, Category
-from catalog.views import home, contacts, ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, \
+from catalog.views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, \
     ProductDeleteView
 
 app_name = CatalogConfig.name

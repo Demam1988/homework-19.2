@@ -19,6 +19,7 @@ class StyleFormMixin:
 class ProductForm(StyleFormMixin, ModelForm):
     ban_list = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево',
                 'бесплатно', 'обман', 'полиция', 'радар']
+
     class Meta:
         model = Product
         fields = ('name', 'image', 'description', 'price')
@@ -44,4 +45,5 @@ class VersionForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Version
         fields = ('name_ver', 'number_ver', 'sign_ver')
+
 

@@ -4,18 +4,22 @@ NULLABLE = {'blank':True, 'null':True}
 
 
 
-# class Blog(models.Model):
-#     title = models.CharField(max_length=100, verbose_name='заголовок')# заголовок,
-#     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-#     content = models.TextField(**NULLABLE, verbose_name='содержимое') # содержимое, можно не заполнять
-#     img_preview = models.ImageField(upload_to='blog_photo', **NULLABLE, verbose_name='изображение') # изображение (превью)
-#     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='количество просмотров') # дата создания,
-#     sign_publication = models.BooleanField(default=True) #признак публикации
-#     number_views = models.IntegerField(**NULLABLE, default=0, verbose_name='просмотры') # просмотры
-#
-#
-#     def __str__(self):
-#         return f'{self.title}'
+class Blog(models.Model):
+    title = models.CharField(max_length=100, verbose_name='заголовок')# заголовок,
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+    content = models.TextField(**NULLABLE, verbose_name='содержимое') # содержимое, можно не заполнять
+    img_preview = models.ImageField(upload_to='blog_photo', **NULLABLE, verbose_name='изображение') # изображение (превью)
+    date_creation = models.DateTimeField(auto_now_add=True, verbose_name='количество просмотров') # дата создания,
+    sign_publication = models.BooleanField(default=True) #признак публикации
+    number_views = models.IntegerField(**NULLABLE, default=0, verbose_name='просмотры') # просмотры
+
+    class Meta:
+        verbose_name = "Блог"
+        verbose_name_plural = "Блоги"
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
 
 
 
@@ -58,7 +62,7 @@ class Version(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="get_ver", verbose_name='продукт')
     number_ver = models.CharField(max_length=100, verbose_name='номер версии')
     name_ver = models.CharField(max_length=100, verbose_name='название версии')
-    sign_ver = models.CharField(max_length=50, choices=SIGN_CHOICES, verbose_name='признак версии')
+    sign_ver = models.BooleanField(max_length=50, choices=SIGN_CHOICES, verbose_name='признак версии')
 
     class Meta:
         verbose_name = 'версия'

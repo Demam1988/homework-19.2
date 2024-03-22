@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.IntegerField(max_length=50, verbose_name='Дата создания (записи в БД)')),
                 ('updated_at', models.IntegerField(max_length=50, verbose_name='Дата последнего изменения (записи в БД)')),
                 ('manufactured_at', models.IntegerField(blank=True, max_length=100, null=True, verbose_name='Дата производства продукта')),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='products', to='catalog.category', verbose_name='Категория')),
+                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='products', to='users.category', verbose_name='Категория')),
             ],
             options={
                 'verbose_name': 'Продукт',

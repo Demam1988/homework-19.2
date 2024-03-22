@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalog', '0003_product_view_counter'),
+        ('users', '0003_product_view_counter'),
     ]
 
     operations = [
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('number_ver', models.CharField(max_length=100, verbose_name='номер версии')),
                 ('name_ver', models.CharField(max_length=100, verbose_name='название версии')),
                 ('sign_ver', models.CharField(choices=[('active', 'Активна'), ('no_active', 'Не активна')], max_length=50, verbose_name='признак версии')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='get_ver', to='catalog.product', verbose_name='продукт')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='get_ver', to='users.product', verbose_name='продукт')),
             ],
             options={
                 'verbose_name': 'версия',

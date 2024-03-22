@@ -1,7 +1,7 @@
 asgiref==3.7.2
 asttokens==2.4.1
 decorator==5.1.1
-Django==5.0.2
+Django==4.2.2
 executing==2.0.1
 ipython==8.22.1
 jedi==0.19.1

@@ -1,3 +1,6 @@
+import secrets
+from datetime import time
+
 from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView as BaseLoginView
@@ -74,25 +77,18 @@ class RegisterView(CreateView):
         return context
 
     def form_valid(self, form):
-        user = form.save(commit=False)
+        token = secrets.token_hex(16)
+        user = form.save()
+        user.token = token
         user.is_active = False
         user.save()
-        # Функционал для отправки письма и генерации токена
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        activation_url = reverse_lazy('users:confirm_email',
-                                      kwargs={'uidb64': uid, 'token': token})
-        current_site = Site.objects.get_current().domain
-        send_mail(
-            subject='Подтвердите свой электронный адрес',
-            message=f'Пожалуйста, перейдите по следующей ссылке, '
-                    f'чтобы подтвердить свой адрес электронной '
-                    f'почты: http://{current_site}{activation_url}',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email],
-            fail_silently=False,
-        )
-        return redirect('users:email_confirmation_sent')
+        host = self.request.get_host()
+        link = f'http://{host}/users/activate/{token}'
+        message = f'''Для активации вашего аккаунта перейдите по ссылке:
+                {link}'''
+        time.sleep(10)
+        send_mail("Верификация почты", message, settings.EMAIL_HOST_USER, [user.email, ])
+        return super().form_valid(form)
 
 
 class UserConfirmEmailView(View):

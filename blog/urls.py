@@ -17,3 +17,4 @@ urlpatterns = [
                        name='delete'),
                   path('edit/<int:pk>', NoteUpdateView.as_view(), name='edit'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

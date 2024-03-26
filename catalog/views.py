@@ -8,21 +8,21 @@ from catalog.models import Product, Version
 
 
 def home(request):
-    return render(request, 'users/base.html')
+    return render(request, 'catalog/base.html')
 
 
 def contacts(request):
-    return render(request, 'users/contacts.html')
+    return render(request, 'catalog/contacts.html')
 
 
 class ProductListView(ListView):
     model = Product
-    template_name = "users/product_list.html"
+    template_name = "catalog/product_list.html"
 
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = "users/product_detail.html"
+    template_name = "catalog/product_detail.html"
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -34,7 +34,7 @@ class ProductDetailView(DetailView):
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('users:product_list')
+    success_url = reverse_lazy('catalog:product_list')
 
 
 class ProductUpdateView(UpdateView):
@@ -42,7 +42,7 @@ class ProductUpdateView(UpdateView):
     form_class = ProductForm
 
     def get_success_url(self):
-        return reverse('users:product_detail', args=[self.kwargs.get('pk')])
+        return reverse('catalog:product_detail', args=[self.kwargs.get('pk')])
 
 
     def get_context_data(self, **kwargs):
@@ -68,14 +68,14 @@ class ProductUpdateView(UpdateView):
 
 class ProductDeleteView(DeleteView):
     model = Product
-    success_url = reverse_lazy('users:product_list')
+    success_url = reverse_lazy('catalog:product_list')
 
 
 class ContactView(View):
-    template_name = "users/contacts.html"
+    template_name = "catalog/contacts.html"
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        return render(request, "users/not_available.html")
+        return render(request, "catalog/not_available.html")

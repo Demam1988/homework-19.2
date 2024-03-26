@@ -8,13 +8,11 @@ from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.contrib.auth.views import (PasswordResetView,
                                        PasswordResetConfirmView)
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.sites.models import Site
 from django.shortcuts import redirect
 
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode
 
 from .forms import UserForgotPasswordForm, UserSetNewPasswordForm
 from django.views.generic import CreateView, View, TemplateView
@@ -71,24 +69,26 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('catalog:home')
     template_name = 'users/register.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Регистрация на сайте'
-        return context
 
-    def form_valid(self, form):
-        token = secrets.token_hex(16)
-        user = form.save()
-        user.token = token
-        user.is_active = False
-        user.save()
-        host = self.request.get_host()
-        link = f'http://{host}/users/activate/{token}'
-        message = f'''Для активации вашего аккаунта перейдите по ссылке:
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['title'] = 'Регистрация на сайте'
+    return context
+
+
+def form_valid(self, form):
+    token = secrets.token_hex(16)
+    user = form.save()
+    user.token = token
+    user.is_active = False
+    user.save()
+    host = self.request.get_host()
+    link = f'http://{host}/users/activate/{token}/'
+    message = f'''Для активации вашего аккаунта перейдите по ссылке:
                 {link}'''
-        time.sleep(10)
-        send_mail("Верификация почты", message, settings.EMAIL_HOST_USER, [user.email, ])
-        return super().form_valid(form)
+    time.sleep(10)
+    send_mail("Верификация почты", message, settings.EMAIL_HOST_USER, [user.email, ])
+    return super().form_valid(form)
 
 
 class UserConfirmEmailView(View):

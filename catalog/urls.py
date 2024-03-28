@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.db.models import PositiveIntegerField
 from django.urls import path
 from catalog.apps import CatalogConfig
 

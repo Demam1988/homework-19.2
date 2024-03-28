@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import (UserCreationForm, SetPasswordForm, UserChangeForm)
+from django.contrib.auth.forms import (UserCreationForm, SetPasswordForm, UserChangeForm, PasswordResetForm)
 from django.contrib.auth.views import PasswordResetView
 from django.forms import forms
 from django.urls import reverse_lazy
@@ -7,10 +7,26 @@ from users.models import User
 from catalog.forms import StyleFormMixin
 
 
-class UserForm(StyleFormMixin, UserCreationForm):
+class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2',)
+
+
+class UserForgotPasswordForm(PasswordResetForm):
+    """
+    Запрос на восстановление пароля
+    """
+
+    def __init__(self, *args, **kwargs):
+        """
+        Обновление стилей формы
+        """
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update(
+                {"class": "form-control", "autocomplete": "off"}
+            )
 
 
 class UserResetPasswordView(StyleFormMixin, PasswordResetView):

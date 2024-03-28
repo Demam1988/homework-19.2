@@ -1,5 +1,4 @@
 import secrets
-from datetime import time
 
 from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
@@ -7,18 +6,18 @@ from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 from django.urls import reverse_lazy, reverse
-from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_decode
 
-from .forms import UserSetNewPasswordForm, UserProfileForm
+from .forms import UserSetNewPasswordForm, UserForgotPasswordForm, UserRegisterForm
 from django.views.generic import CreateView, View, TemplateView, UpdateView
 
 from config import settings
-from users.forms import UserForm
 from users.models import User
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -31,26 +30,20 @@ class LogoutView(BaseLogoutView):
 
 
 class UserForgotPasswordView(UpdateView):
-    model = User
-    form_class = UserProfileForm
-    success_url = reverse_lazy('users:user_password_reset.html')
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-
-def generate_pass(request):
-    password = User.objects.make_random_password()
-    request.user.set_password(password)
-    request.user.save()
-    send_mail(
-        subject='Восстановление пароля',
-        message=f'Ваш новый пароль - {password}',
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[request.user.email]
+    form_class = UserForgotPasswordForm
+    template_name = "users/user_password_reset.html"
+    success_url = reverse_lazy("catalog:home")
+    success_message = (
+        "Письмо с инструкцией по "
+        "восстановлению пароля отправлено на ваш email"
     )
+    subject_template_name = "users/password_subject_reset_mail.txt"
+    email_template_name = "users/password_reset_mail.html"
 
-    return redirect(reverse('users:login'))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Запрос на восстановление пароля"
+        return context
 
 
 class UserPasswordResetConfirmView(SuccessMessageMixin,
@@ -69,32 +62,34 @@ class UserPasswordResetConfirmView(SuccessMessageMixin,
 
 # далее контроллеры для подтверждения почты
 
-class RegisterView(CreateView):
+class UserRegisterView(CreateView):
     """Представление регистрации на сайте с формой регистрации"""
-    form_class = UserForm
+    model = User
+    form_class = UserRegisterForm
     success_url = reverse_lazy('users:email_confirmation_sent')
     template_name = 'users/register.html'
 
+    def get_success_url(self):
+        return reverse("users:login")
 
-def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
-    context['title'] = 'Регистрация на сайте'
-    return context
+    def form_valid(self, form):
+        token = secrets.token_hex(16)
+        user = form.save()
+        user.token = token
+        user.is_active = False
+        user.save()
+        host = self.request.get_host()
+        link = f"http://{host}/users/confirm-register/{token}"
+        massege = f"Вы успешно зарегистрировались, подтвердите почту {link}"
+        send_mail('подтвердите почту', massege, settings.EMAIL_HOST_USER, [user.email])
 
 
-def form_valid(self, form):
-    token = secrets.token_hex(16)
-    user = form.save()
-    user.token = token
-    user.is_active = False
+def confirm_email(request, token):
+    user = get_object_or_404(User, token=token)
+    user.is_active = True
     user.save()
-    host = self.request.get_host()
-    link = f'http://{host}/users/register/{token}/'
-    message = f'''Для активации вашего аккаунта перейдите по ссылке:
-                {link}'''
-    time.sleep(10)
-    send_mail("Верификация почты", message, settings.EMAIL_HOST_USER, [user.email, ])
-    return super().form_valid(form)
+    return redirect(reverse("users:login"))
+
 
 
 class UserConfirmEmailView(View):
@@ -140,3 +135,5 @@ class EmailConfirmationFailedView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Ваш электронный адрес не активирован'
         return context
+
+

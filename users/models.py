@@ -8,6 +8,7 @@ NULLABLE = {
 
 
 class User(AbstractUser):
+
     username = None
 
     email = models.EmailField(max_length=60, help_text="Ведите email", unique=True, verbose_name='email')
@@ -18,6 +19,7 @@ class User(AbstractUser):
                                     verbose_name="номер телефона", help_text="Укажите номер телеыона", **NULLABLE)
     country = models.CharField(max_length=255,
                                verbose_name="страна", help_text="Укажите страну", **NULLABLE)
+    token = models.CharField(max_length=50, verbose_name='Токен', **NULLABLE)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

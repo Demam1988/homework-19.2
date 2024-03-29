@@ -9,20 +9,8 @@ from blog.models import Note
 # Create your views here.
 class NoteCreateView(CreateView):
     model = Note
-    fields = [
-        'header',
-        'slug',
-        'content',
-        'preview',
-        'is_published',
-    ]
+    fields = ['header', 'slug', 'content', 'preview', 'is_published']
     success_url = reverse_lazy('blog:list')
-
-    # (django_env)
-    # andrejskovorodnikov @ MacBook - Air - Andrej
-    # hello_django_19_2 % pip
-    # install
-    # pytils
 
     def form_valid(self, form):
         if form.is_valid():
@@ -31,17 +19,16 @@ class NoteCreateView(CreateView):
             new_note.save()
 
         return super().form_valid(form)
+
+    slug_url_kwarg = 'the_slug'
+    # Should match the name of the slug field on the model
+    slug_field = 'slug'
 
 
 class NoteUpdateView(UpdateView):
     model = Note
-    fields = [
-        'header',
-        'slug',
-        'content',
-        'preview',
-        'is_published',
-    ]
+    fields = ['header', 'slug', 'content', 'preview', 'is_published']
+
 
     def form_valid(self, form):
         if form.is_valid():
@@ -51,10 +38,14 @@ class NoteUpdateView(UpdateView):
 
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse('blog:detail_view', args=[self.kwargs.get('pk')])
+    slug_url_kwarg = 'the_slug'
+    slug_field = 'slug'
 
-    # success_url = reverse_lazy('blog:list')
+    def get_success_url(self, *args, **kwargs):
+        super().get_success_url()
+        return reverse_lazy('catalog:view_blog', kwargs={'the_slug': self.object.slug})
+
+
 
 
 class NoteDeleteView(DeleteView):
@@ -79,3 +70,8 @@ class NoteDetailView(DetailView):
         self.object.count_view += 1
         self.object.save()
         return self.object
+
+    slug_url_kwarg = 'the_slug'
+    # Should match the name of the slug field on the model
+    slug_field = 'slug'
+

@@ -1,4 +1,6 @@
 from django.db import models
+from users.models import User
+
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -26,6 +28,7 @@ class Product(models.Model):
     updated_at = models.IntegerField(max_length=50, verbose_name="Дата последнего изменения (записи в БД)", **NULLABLE)
     manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", **NULLABLE)
     view_counter = models.PositiveIntegerField(verbose_name="Счетчик Проcмотров", help_text="Укажите кол-во просмотров", default=0)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE)
 
 
     class Meta:

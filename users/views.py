@@ -2,7 +2,7 @@ import secrets
 
 from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import LoginView as BaseLoginView
+from django.contrib.auth.views import LoginView as BaseLoginView, PasswordResetView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -29,15 +29,15 @@ class LogoutView(BaseLogoutView):
     pass
 
 
-class UserForgotPasswordView(UpdateView):
+class UserForgotPasswordView(SuccessMessageMixin, PasswordResetView):
     form_class = UserForgotPasswordForm
     template_name = "users/user_password_reset.html"
-    success_url = reverse_lazy("catalog:home")
+    success_url = reverse_lazy("users:login")
     success_message = (
         "Письмо с инструкцией по "
         "восстановлению пароля отправлено на ваш email"
     )
-    subject_template_name = "users/password_subject_reset_mail.txt"
+    subject_template_name = "users/password_subject_reset_mail.txt.html"
     email_template_name = "users/password_reset_mail.html"
 
     def get_context_data(self, **kwargs):
@@ -51,7 +51,7 @@ class UserPasswordResetConfirmView(SuccessMessageMixin,
     """Представление установки нового пароля"""
     form_class = UserSetNewPasswordForm
     template_name = 'users/user_password_set_new.html'
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('users:login')
     success_message = 'Пароль успешно изменен. Можете авторизоваться на сайте.'
 
     def get_context_data(self, **kwargs):

@@ -29,6 +29,7 @@ class Product(models.Model):
     manufactured_at = models.IntegerField(max_length=100, verbose_name="Дата производства продукта", **NULLABLE)
     view_counter = models.PositiveIntegerField(verbose_name="Счетчик Проcмотров", help_text="Укажите кол-во просмотров", default=0)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", **NULLABLE)
+    is_published = models.BooleanField(default=False, verbose_name="Опубликовано")
 
 
     class Meta:
@@ -38,6 +39,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    permissions = [
+        ("change_published", "отменять публикацию продукта",),
+        ("change_description", "может менять описание любого продукта",),
+        ("change_category", "может менять категорию любого продукта",)
+    ]
 
 
 class Version(models.Model):

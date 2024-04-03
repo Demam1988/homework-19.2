@@ -41,6 +41,12 @@ class ProductForm(StyleFormMixin, ModelForm):
         return cleaned_data
 
 
+class ProductModeratorForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = ("description", "category", 'is_published')
+
+
 class VersionForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Version
@@ -48,5 +54,8 @@ class VersionForm(StyleFormMixin, ModelForm):
 
         name = forms.CharField(widget=forms.TextInput(
             attrs={"class": "myfield"}))
+
+
+
 
 

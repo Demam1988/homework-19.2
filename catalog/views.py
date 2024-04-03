@@ -1,10 +1,11 @@
+from django.http import HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
 
 
@@ -51,7 +52,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('catalog:product_list', args=[self.kwargs.get('pk')])
 
-
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         ProductFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1, )
@@ -74,6 +74,16 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             self.object.save()
 
             return super().form_valid(form)
+
+    def get_form_class(self):
+        """Переопределение метода выбора формы для редактирования"""
+        user = self.request.user
+        perms = ("product.change_published", "product.change_description", "product.change_category")
+        if user.has_perms(perms):
+            return ProductModeratorForm
+        if user == self.object.owner:
+            return ProductForm
+        raise HttpResponseForbidden
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):

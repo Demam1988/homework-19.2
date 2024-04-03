@@ -27,10 +27,11 @@
                             <td>{{ product.description | truncatechars:100}}</td>
                             <li><a href="{% url 'catalog:product_detail' product.pk %}"
                                    class="text-white">Посмотреть</a></li>
+                            {% if user.is_authenticated %}
                             <li><a href="{% url 'catalog:product_update' product.pk %}"
                                    class="text-white">Редактировать</a></li>
-                            <li><a href="{% url 'catalog:product_delete' product.pk %}" class="text-white">Удалить</a>
-                            </li>
+                            <li><a href="{% url 'catalog:product_delete' product.pk %}" class="text-white">Удалить</a></li>
+                            {% endif %}
                         </tr>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-body-secondary">{{ product.breed }}</small>

@@ -69,8 +69,6 @@ class UserRegisterView(CreateView):
     success_url = reverse_lazy('users:email_confirmation_sent')
     template_name = 'users/register.html'
 
-    def get_success_url(self):
-        return reverse("users:login")
 
     def form_valid(self, form):
         token = secrets.token_hex(16)
@@ -82,7 +80,7 @@ class UserRegisterView(CreateView):
         link = f"http://{host}/users/confirm-register/{token}"
         massege = f"Вы успешно зарегистрировались, подтвердите почту {link}"
         send_mail('подтвердите почту', massege, settings.EMAIL_HOST_USER, [user.email])
-
+        return redirect(reverse("users:login"))
 
 def confirm_email(request, token):
     user = get_object_or_404(User, token=token)

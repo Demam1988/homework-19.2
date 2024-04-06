@@ -7,7 +7,7 @@ from users.models import User
 from catalog.forms import StyleFormMixin
 
 
-class UserRegisterForm(UserCreationForm):
+class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2',)

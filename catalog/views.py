@@ -26,6 +26,12 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset.filter(category_id=self.kwargs.get('pk'))
+        print(queryset[0].category)
+        return queryset
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.view_counter += 1
